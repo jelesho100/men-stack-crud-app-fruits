@@ -6,10 +6,16 @@ const mongoose = require("mongoose");
 
 const app = express();
 //
+
 mongoose.connect(process.env.MONGODB_URI); //Connect to MongoDB using the connection string in the .env file
+
 mongoose.connection.on('connected', () =>{
     console.log(`Connected to MongoDB ${mongoose.connection.name}`);
 })
+
+
+//import the fruit model
+const Fruit = require('./models/fruit.js');
 // GET /
 app.get("/", async (req, res) => {
     res.render("index.ejs");
