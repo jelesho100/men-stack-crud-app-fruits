@@ -25,24 +25,27 @@ app.get("/", async (req, res) => {
     res.render("index.ejs");
 });
 
+app.get("/fruits", async (req, res) => {
+    const allFruits = await Fruit.find();
+    res.render("fruits/index.ejs", { fruits: allFruits });
+});
+
 //get/fruits/new
 app.get("/fruits/new", (req, res) => {
     res.render('fruits/new.ejs');
 });
 
-//POST /fruits
-// server.js
 
-// POST /fruits
+//POST /fruits
 app.post("/fruits", async (req, res) => {
-    if(req.body.isReadyToEat === 'on'){
+    if (req.body.isReadyToEat === 'on') {
         req.body.isReadyToEat = true;
-    }else{
+    } else {
         req.body.isReadyToEat = false;
     }
 
     await Fruit.create(req.body); //this line is the database transaction
-    res.redirect("/fruits/new");
+    res.redirect("/fruits");
 });
 
 
