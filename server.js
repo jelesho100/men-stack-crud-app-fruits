@@ -9,9 +9,13 @@ const app = express();
 
 mongoose.connect(process.env.MONGODB_URI); //Connect to MongoDB using the connection string in the .env file
 
-mongoose.connection.on('connected', () =>{
+mongoose.connection.on('connected', () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}`);
-})
+});
+
+//adding middleware for app
+app.use(express.urlencoded({ extended: false }));
+
 
 
 //import the fruit model
@@ -25,6 +29,22 @@ app.get("/", async (req, res) => {
 app.get("/fruits/new", (req, res) => {
     res.render('fruits/new.ejs');
 });
+
+//POST /fruits
+// server.js
+
+// POST /fruits
+app.post("/fruits", async (req, res) => {
+    if(req.body.isReadyToEat === 'on'){
+        req.body.isReadyToEat = true;
+    }else{
+        req.body.isReadyToEat = false;
+    }
+
+    await Fruit.create(req.body); //this line is the database transaction
+    res.redirect("/fruits/new");
+});
+
 
 
 
