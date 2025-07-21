@@ -21,7 +21,7 @@ const Fruit = require('./models/fruit.js');
 //adding middleware for app
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
-app.use(morgan("dev")); 
+app.use(morgan("dev"));
 
 
 
@@ -64,6 +64,12 @@ app.delete("/fruits/:fruitId", async (req, res) => {
     await Fruit.findByIdAndDelete(req.params.fruitId);
     res.redirect("/fruits");
 });
+
+app.get("/fruits/:fruitId/edit", async (req, res) => {
+    const foundFruit = await Fruit.findById(req.params.fruitId);
+    res.render("fruits/edit.ejs", { fruit: foundFruit, });
+});
+
 
 
 
